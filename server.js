@@ -3,8 +3,15 @@ import http from "http";
 import { Server } from "socket.io";
 import connectDB from "./lib/connect.js";
 import Message from "./model/message.js";
-
+import cors from 'cors';
 const app = express();
+app.use(cors({
+  origin:[ "https://realtimechatapp-hy0h.onrender.com",
+     "http://localhost:3000"
+  ],
+  methods: "GET,POST,PUT,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+}));
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
@@ -12,6 +19,7 @@ const io = new Server(server, {
         methods: ["GET", "POST"],
     },
 });
+
 app.use(express.json());
 await connectDB();
 const users = new Map();
